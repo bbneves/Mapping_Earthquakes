@@ -1,7 +1,7 @@
 
 
 // Map object with a center and zoom level
-let myMap = L.map('mapid').setView([37.6213, -122.3790], 5);
+let myMap = L.map('mapid').setView([30, 30], 2);
 // Line coordinate LAX to SFO
 let lines = [[33.9416, -118.4085],
 [37.6213, -122.3790],
@@ -19,6 +19,7 @@ streets.addTo(myMap);
 
 // Get data from cities.js
 let cityData = cities;
+let sanFrans = sanFranAirport
 
 
 // Let's go to LA
@@ -26,12 +27,32 @@ let cityData = cities;
 
 
   // Looping through every city
-cityData.forEach(function(city)
-    {console.log(city)
-     L.circleMarker(city.location, {radius:(city.population)/100000, color:"orange", colorFill:"orange"}).bindPopup("<h2>"+city.city+", "+city.state+"</h> <hr> <h3>Population "+city.population.toLocaleString()+"</h3>").addTo(myMap);
-    });
+// cityData.forEach(function(city)
+//     {console.log(city)
+//      L.circleMarker(city.location, {radius:(city.population)/100000, color:"orange", colorFill:"orange"}).bindPopup("<h2>"+city.city+", "+city.state+"</h> <hr> <h3>Population "+city.population.toLocaleString()+"</h3>").addTo(myMap);
+//     });
 
 
-// Creating polyline using the lines coordinates.
-L.polyline(lines,{color:"yellow"}).addTo(myMap);
+// // Creating polyline using the lines coordinates.
+// L.polyline(lines,{color:"blue"}).addTo(myMap);
+
+
+// Getting the GeoJSON data.
+// L.geoJSON(sanFranAirport).addTo(myMap);
+
+// L.geoJSON(sanFranAirport, {
+//     // We turn each feature into a marker on the map.
+//     pointToLayer: function(feature, latlng) {
+//       console.log(feature);
+//       return L.marker(latlng).bindPopup("<h2>" + feature.properties.name + "</h2><hr><h3>"+feature.properties.city+ ", "+ feature.properties.country +"</h3>");
+//     }
+
+//   }).addTo(myMap);
+
+  L.geoJSON(sanFranAirport, {
+    onEachFeature: function(feature,layer) {
+        console.log(layer);
+        layer.bindPopup("<h2> Airport Code: " + feature.properties.faa + "</h2><hr><h3>Aiport Name: "+feature.properties.name +"</h3>");
+    }
+  }).addTo(myMap);
 
