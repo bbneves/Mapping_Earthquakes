@@ -19,18 +19,26 @@ let light = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles
         accessToken: API_KEY
 });
 
+// Adding the Fourth Map Layer
+let satellite = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/satellite-streets-v11/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+    attribution: 'Map data © <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery (c) <a href="https://www.mapbox.com/">Mapbox</a>',
+        maxZoom: 18,
+        accessToken: API_KEY
+});
+
 // Base Layer for hold the MAPS
 let baseMaps = {
     Street: streets,
     Dark: dark,
-    Light: light
+    Light: light,
+    Satellite: satellite
 };
 
 // Map object with a center and zoom level
 let myMap = L.map('mapid', {
-    center: [-79.39119482699992, 43.68108112399995],
-    zoom: 8,
-    layer:[streets]
+    center: [43.7, -79.3],
+    zoom: 11,
+    layer:[satellite]
 });
 // let myMap = L.map('mapid').setView([30, 30], 2);
 
@@ -81,7 +89,20 @@ streets.addTo(myMap);
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //TORONTO NEIGHBORHOOD POLYGON /////////////////////////////////////////////////////////////////////////////////////////////
 
+// Acessing Toronto Neighborhood GeoJSON
+let torontoNeigh = "https://raw.githubusercontent.com/bbneves/Mapping_Earthquakes/main/SImple_Map/torontoNeighborhoods.json";
 
+d3.json(torontoNeigh).then(function(data) {
+    console.log(data);
+    L.geoJSON(data, {
+        color:"blue",
+        fillColor:"yellow",
+        weight:1,
+        onEachFeature:function(feature,layer) {
+            layer.bindPopup("<h3> Neighborhood: " + feature.properties.AREA_NAME + "</h3>")
+        }
+    }).addTo(myMap);
+});
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
