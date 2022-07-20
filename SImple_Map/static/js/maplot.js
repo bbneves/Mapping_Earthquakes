@@ -28,8 +28,8 @@ let baseMaps = {
 
 // Map object with a center and zoom level
 let myMap = L.map('mapid', {
-    center: [44.0, -80.0],
-    zoom: 2,
+    center: [-79.39119482699992, 43.68108112399995],
+    zoom: 8,
     layer:[streets]
 });
 // let myMap = L.map('mapid').setView([30, 30], 2);
@@ -40,43 +40,52 @@ L.control.layers(baseMaps).addTo(myMap);
 // Testing GRAYMAP layer
 streets.addTo(myMap);
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// AIRPORT CODE ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// // Accessing the airport GeoJSON URL
+// let airportData = "https://raw.githubusercontent.com/bbneves/Mapping_Earthquakes/main/SImple_Map/majorAirports.json";
 
-// AIRPORT CODE
-// Accessing the airport GeoJSON URL
-let airportData = "https://raw.githubusercontent.com/bbneves/Mapping_Earthquakes/main/SImple_Map/majorAirports.json";
-
-// Getting Data com the GIT GEOJSON
-d3.json(airportData).then(function(data) {
-    // console.log(data);
-    //Creating a GeoJSON layer with the retrieved data.
-    L.geoJSON(data,{
-        onEachFeature: function(feature,layer) {
-            console.log(layer);
-            layer.bindPopup("<h2> Airport Code: " + feature.properties.faa + 
-            "</h2><hr><h3>Aiport Name: "+feature.properties.name +"</h3>")}}).addTo(myMap)});
+// // Getting Data com the GIT GEOJSON
+// d3.json(airportData).then(function(data) {
+//     // console.log(data);
+//     //Creating a GeoJSON layer with the retrieved data.
+//     L.geoJSON(data,{
+//         onEachFeature: function(feature,layer) {
+//             console.log(layer);
+//             layer.bindPopup("<h2> Airport Code: " + feature.properties.faa + 
+//             "</h2><hr><h3>Aiport Name: "+feature.properties.name +"</h3>")}}).addTo(myMap)});
 
 
-
-// Toronto COde
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Toronto COde/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Accessing Toronto GeoJSON URL
-let torontoData = "https://raw.githubusercontent.com/bbneves/Mapping_Earthquakes/main/SImple_Map/torontoRoutes.json";
+// let torontoData = "https://raw.githubusercontent.com/bbneves/Mapping_Earthquakes/main/SImple_Map/torontoRoutes.json";
 
-// Styling the lines
-let myStyle = {
-    color:"#ffffa1",
-    weight:2
-};
+// // Styling the lines
+// let myStyle = {
+//     color:"#ffffa1",
+//     weight:2
+// };
 
-d3.json(torontoData).then(function(data){
-    console.log(data);
-    L.geoJSON(data, {
-        style: myStyle,
-        onEachFeature: function(feature,layer){
-            layer.bindPopup("<h2> Airline: "+ feature.properties.airline +
-            "</h2><hr><h3>Destination: "+ feature.properties.dst +"</h3>")
-        }
-    }).addTo(myMap);
-});
+// d3.json(torontoData).then(function(data){
+//     console.log(data);
+//     L.geoJSON(data, {
+//         style: myStyle,
+//         onEachFeature: function(feature,layer){
+//             layer.bindPopup("<h2> Airline: "+ feature.properties.airline +
+//             "</h2><hr><h3>Destination: "+ feature.properties.dst +"</h3>")
+//         }
+//     }).addTo(myMap);
+// });
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//TORONTO NEIGHBORHOOD POLYGON /////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 
 
 
