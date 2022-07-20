@@ -40,11 +40,10 @@ L.control.layers(baseMaps).addTo(myMap);
 // Testing GRAYMAP layer
 streets.addTo(myMap);
 
+
+// AIRPORT CODE
 // Accessing the airport GeoJSON URL
 let airportData = "https://raw.githubusercontent.com/bbneves/Mapping_Earthquakes/main/SImple_Map/majorAirports.json";
-
-// Accessing Toronto GeoJSON URL
-let torontoData = "https://raw.githubusercontent.com/bbneves/Mapping_Earthquakes/main/SImple_Map/torontoRoutes.json";
 
 // Getting Data com the GIT GEOJSON
 d3.json(airportData).then(function(data) {
@@ -53,15 +52,30 @@ d3.json(airportData).then(function(data) {
     L.geoJSON(data,{
         onEachFeature: function(feature,layer) {
             console.log(layer);
-            layer.bindPopup("<h2> Airport Code: " + feature.properties.faa + "</h2><hr><h3>Aiport Name: "+feature.properties.name +"</h3>")}}).addTo(myMap)});
+            layer.bindPopup("<h2> Airport Code: " + feature.properties.faa + 
+            "</h2><hr><h3>Aiport Name: "+feature.properties.name +"</h3>")}}).addTo(myMap)});
 
 
 
 // Toronto COde
+// Accessing Toronto GeoJSON URL
+let torontoData = "https://raw.githubusercontent.com/bbneves/Mapping_Earthquakes/main/SImple_Map/torontoRoutes.json";
+
+// Styling the lines
+let myStyle = {
+    color:"#ffffa1",
+    weight:2
+};
 
 d3.json(torontoData).then(function(data){
     console.log(data);
-    L.geoJSON(data).addTo(myMap);
+    L.geoJSON(data, {
+        style: myStyle,
+        onEachFeature: function(feature,layer){
+            layer.bindPopup("<h2> Airline: "+ feature.properties.airline +
+            "</h2><hr><h3>Destination: "+ feature.properties.dst +"</h3>")
+        }
+    }).addTo(myMap);
 });
 
 
