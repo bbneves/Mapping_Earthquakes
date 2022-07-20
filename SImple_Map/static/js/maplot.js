@@ -1,25 +1,72 @@
-
-
-// Map object with a center and zoom level
-let myMap = L.map('mapid').setView([30, 30], 2);
-// Line coordinate LAX to SFO
-let lines = [[33.9416, -118.4085],
-[37.6213, -122.3790],
-[40.7899, -111.9791],
-[47.4502, -122.3088]];
-
 // Tile layer to be the background of the map
-let streets = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/satellite-streets-v11/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+let streets = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token={accessToken}', {
 attribution: 'Map data © <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery (c) <a href="https://www.mapbox.com/">Mapbox</a>',
     maxZoom: 18,
     accessToken: API_KEY
 });
+
+// Adding the Second Map Layer
+let dark = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/dark-v10/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+    attribution: 'Map data © <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery (c) <a href="https://www.mapbox.com/">Mapbox</a>',
+        maxZoom: 18,
+        accessToken: API_KEY
+});
+// Base Layer for hold the MAPS
+let baseMaps = {
+    Street: streets,
+    Dark: dark
+};
+
+// Map object with a center and zoom level
+let myMap = L.map('mapid', {
+    center: [30,30],
+    zoom: 2,
+    layer:[streets]
+});
+// let myMap = L.map('mapid').setView([30, 30], 2);
+
+// Map options control panel
+L.control.layers(baseMaps).addTo(myMap);
+
 // Testing GRAYMAP layer
 streets.addTo(myMap);
 
-// Get data from cities.js
-let cityData = cities;
-let sanFrans = sanFranAirport
+// Accessing the airport GeoJSON URL
+let airportData = "https://raw.githubusercontent.com/bbneves/Mapping_Earthquakes/main/SImple_Map/majorAirports.json";
+
+// Getting Data com the GIT GEOJSON
+d3.json(airportData).then(function(data) {
+    // console.log(data);
+    //Creating a GeoJSON layer with the retrieved data.
+    L.geoJSON(data,{
+        onEachFeature: function(feature,layer) {
+            console.log(layer);
+            layer.bindPopup("<h2> Airport Code: " + feature.properties.faa + "</h2><hr><h3>Aiport Name: "+feature.properties.name +"</h3>")}}).addTo(myMap)});
+
+
+//    for (let i=0; i<data.features.length;i++){
+    // console.log(data.features[i].properties.city);
+    // L.geoJSON(data).bindPopup("<h2> Airport Code: " + data.features[i].properties.faa + "</h2><hr><h3>Aiport Name: "+ data.features[i].properties.name +"</h3>").addTo(myMap);
+
+
+// L.geoJSON(sanFranAirport, {
+//         onEachFeature: function(feature,layer) {
+//             console.log(layer);
+//             layer.bindPopup("<h2> Airport Code: " + feature.properties.faa + "</h2><hr><h3>Aiport Name: "+feature.properties.name +"</h3>")}});
+
+
+
+// PRACTICE AREA
+
+// Line coordinate LAX to SFO
+// let lines = [[33.9416, -118.4085],
+// [37.6213, -122.3790],
+// [40.7899, -111.9791],
+// [47.4502, -122.3088]];
+
+// // Get data from cities.js
+// let cityData = cities;
+// let sanFrans = sanFranAirport
 
 
 // Let's go to LA
@@ -49,10 +96,9 @@ let sanFrans = sanFranAirport
 
 //   }).addTo(myMap);
 
-  L.geoJSON(sanFranAirport, {
-    onEachFeature: function(feature,layer) {
-        console.log(layer);
-        layer.bindPopup("<h2> Airport Code: " + feature.properties.faa + "</h2><hr><h3>Aiport Name: "+feature.properties.name +"</h3>");
-    }
-  }).addTo(myMap);
-
+//   L.geoJSON(sanFranAirport, {
+//     onEachFeature: function(feature,layer) {
+//         console.log(layer);
+//         layer.bindPopup("<h2> Airport Code: " + feature.properties.faa + "</h2><hr><h3>Aiport Name: "+feature.properties.name +"</h3>");
+//     }
+//   }).addTo(myMap);
